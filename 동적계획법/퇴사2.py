@@ -1,25 +1,21 @@
 # https://www.acmicpc.net/problem/15486
 
-# 다른 사람의 아이디어 보고 푼 문제
-# 정말 해설을 봐도 이해가 잘 되지 않는 문제였다.
-# 작은 문제를 어떻게 정의 해야할지 감이 잡히지 않았다.
-# 해설을 본뒤 dp 값들을 업데이트 하는 방법도 직관적으로 이해가 되지 않았다.
+import sys
+input = sys.stdin.readline
 
 n = int(input())
-time = [0]
-pay = [0]
-for i in range(n):
-    t, p = map(int, input().split())
-    time.append(t)
-    pay.append(p)
+schedule = [0] # 0번째 인덱스에 더미값 주입
+dp = [0]*(n+1) # dp[i]는 i일 다음날 얻게되는 최대 금액
 
-dp = [0]*(n+2)
+for _ in range(n):
+    t,p = map(int,input().split())
+    schedule.append((t,p))
 
-# dp[i]는 i일 전까지 일했던 금액
-for i in range(1, n+2):
-    if dp[i] < dp[i-1]:
-        dp[i] = dp[i-1]
-    if i < n+1 and time[i] + i <= n+1:
-        dp[i+time[i]] = max(pay[i]+dp[i], dp[i+time[i]])
+for i in range(1,n+1):
+    t,p = schedule[i][0],schedule[i][1]
+    dp[i] = max(dp[i],dp[i-1])
+    dead_line = i+t-1 # i일에 시작한 상담이 끝나는 날
+    if dead_line <= n:
+        dp[dead_line] = max(dp[i-1]+p,dp[dead_line])
 
-print(dp[-1])
+print(dp[n])

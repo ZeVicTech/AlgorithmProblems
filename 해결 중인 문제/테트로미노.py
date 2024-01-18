@@ -6,6 +6,6 @@ import sys
 
 n,m = map(int,input().split())
 
-graph = [list(map(int, sys.stdin.readline().split())) for _ in range(n)]
+graph = list(map(int,6 sys.stdin.readline().split())) for _ in range(n)
 
 print(graph)
